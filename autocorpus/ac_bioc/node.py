@@ -5,12 +5,12 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 
-from dataclasses_json import dataclass_json
+from dataclasses_json import DataClassJsonMixin, dataclass_json
 
 
 @dataclass_json
 @dataclass
-class BioCNode:
+class BioCNode(DataClassJsonMixin):
     """Represents a node in a BioC graph with a reference ID and a role."""
 
     refid: str = field(default_factory=str)

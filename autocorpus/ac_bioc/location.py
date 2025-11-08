@@ -8,9 +8,11 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 
+from dataclasses_json import DataClassJsonMixin
+
 
 @dataclass
-class BioCLocation:
+class BioCLocation(DataClassJsonMixin):
     """Represents a location in BioC format."""
 
     offset: int = field(

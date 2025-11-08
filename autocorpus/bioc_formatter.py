@@ -26,6 +26,7 @@ def get_formatted_bioc_collection(
         source="Auto-CORPus (full-text)",
         key="autocorpus_fulltext.key",
     )
+    # print(f"main_text: {main_text}")
     return bioc_collection
 
 

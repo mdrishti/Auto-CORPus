@@ -134,7 +134,9 @@ def _extract_text(soup: BeautifulSoup, config: dict[str, Any]) -> dict[str, Any]
     if "keywords" in config and (keywords := _get_keywords(soup, config["keywords"])):
         maintext.append(keywords)
     sections = _get_sections(soup, config["sections"]) if "sections" in config else []
+
     for sec in sections:
+        # print(f"result:{sec}") # here lies the problem
         maintext.extend(get_section(config, sec))
 
     # filter out the sections which do not contain any info
@@ -295,6 +297,7 @@ def process_html_article(
         raise RuntimeError("A valid config file must be loaded.")
 
     soup = load_html_file(file_path)
+    # print(f"Main text: {soup}") - works until here..
     main_text = _extract_text(soup, config)
     try:
         abbreviations = get_abbreviations(main_text, soup, file_path)

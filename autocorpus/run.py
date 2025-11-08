@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from . import logger
 from .file_processing import process_file
 
 
@@ -14,11 +15,13 @@ def run_autocorpus(config, structure, key, output_format):
         key: The key in the structure dict for the current file.
         output_format: The output format to use (JSON or XML).
     """
+    logger.info("Sending files for processing...")
     ac = process_file(
         config=config,
         file_path=Path(structure[key]["main_text"]),
         linked_tables=sorted(Path(lt) for lt in structure[key]["linked_tables"]),
     )
+    logger.info("Sent for processing...")
 
     out_dir = Path(structure[key]["out_dir"])
     if structure[key]["main_text"]:

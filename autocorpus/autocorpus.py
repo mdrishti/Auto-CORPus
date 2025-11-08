@@ -5,6 +5,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from autocorpus.ac_bioc.json import BioCJSONEncoder
+
 from .ac_bioc import BioCJSON, BioCXML
 from .ac_bioc.collection import BioCCollection
 from .bioc_formatter import get_formatted_bioc_collection
@@ -47,6 +49,7 @@ class Autocorpus:
         """
         return json.dumps(
             get_formatted_bioc_collection(self.main_text, self.file_path),
+            cls=BioCJSONEncoder,
             indent=2,
             ensure_ascii=False,
         )
@@ -75,7 +78,9 @@ class Autocorpus:
         Returns:
             tables as Tables-JSON
         """
-        return json.dumps(self.tables, ensure_ascii=False, indent=indent)
+        return json.dumps(
+            self.tables, cls=BioCJSONEncoder, ensure_ascii=False, indent=indent
+        )
 
     def abbreviations_to_bioc_json(self, indent: int = 2) -> str:
         """Get the currently loaded abbreviations as BioC JSON.
@@ -86,7 +91,9 @@ class Autocorpus:
         Returns:
             abbreviations as BioC JSON
         """
-        return json.dumps(self.abbreviations, ensure_ascii=False, indent=indent)
+        return json.dumps(
+            self.abbreviations, cls=BioCJSONEncoder, ensure_ascii=False, indent=indent
+        )
 
     def to_json(self, indent: int = 2) -> str:
         """Get the currently loaded AC object as a dict.
@@ -97,7 +104,9 @@ class Autocorpus:
         Returns:
             AC object as a JSON string
         """
-        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+        return json.dumps(
+            self.to_dict(), cls=BioCJSONEncoder, ensure_ascii=False, indent=indent
+        )
 
     def to_dict(self) -> dict[str, Any]:
         """Get the currently loaded AC object as a dict.

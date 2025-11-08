@@ -74,6 +74,7 @@ def main():
 
     # Run autocorpus on each file in the structure
     structure = read_file_structure(file_path, target_dir)
+    print(structure)
     pbar = tqdm(structure.keys())
     success = []
     errors = []

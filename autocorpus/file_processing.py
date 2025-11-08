@@ -32,6 +32,7 @@ def process_file(
     tables_dict: dict[str, Any] = {}
     match check_file_type(file_path):
         case FileType.HTML:
+            print("Sent yet again for processing...")
             return Autocorpus(
                 file_path, *process_html_article(config, file_path, linked_tables)
             )

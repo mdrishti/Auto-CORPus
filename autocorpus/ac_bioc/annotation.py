@@ -6,11 +6,13 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from dataclasses_json import DataClassJsonMixin
+
 from .location import BioCLocation
 
 
 @dataclass
-class BioCAnnotation:
+class BioCAnnotation(DataClassJsonMixin):
     """Represents an annotation in a BioC document."""
 
     id: str = field(default_factory=str)

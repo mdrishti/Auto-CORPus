@@ -235,7 +235,12 @@ def get_section(
         config: AC configuration object.
         section_dict: Article section dictionary.
     """
-    section_heading = section_dict.get("headers", [""])[0]
+    # sectionNodes = section_dict.get("node")
+    # print(f"Sections: {sectionNodes}")
+    # section_heading = section_dict.get("headers", [""])[0] # not sure how the authors did not catch this error.
+    section_heading = (section_dict.get("headers") or [""])[0]
+    print(f"Sections: {section_heading}")
+
     section_type = get_iao_term_mapping(section_heading)
 
     # Different processing for abbreviations and references section types
