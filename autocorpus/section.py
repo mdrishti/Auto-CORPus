@@ -235,12 +235,17 @@ def get_section(
         config: AC configuration object.
         section_dict: Article section dictionary.
     """
-    # sectionNodes = section_dict.get("node")
-    # print(f"Sections: {sectionNodes}")
-    # section_heading = section_dict.get("headers", [""])[0] # not sure how the authors did not catch this error.
-    section_heading = (section_dict.get("headers") or [""])[0]
-    print(f"Sections: {section_heading}")
+    # Get section heading with fallback to node extraction
+    headers = section_dict.get("headers") or []
+    if headers:
+        section_heading = headers[0]
+    else:
+        # print("Trying the else for header extraction:")
+        # Fallback: extract heading from the node itself
+        node = section_dict.get("node")
+        section_heading = _extract_heading_from_node(node)
 
+    print(f"Section heading: '{section_heading}'")
     section_type = get_iao_term_mapping(section_heading)
 
     # Different processing for abbreviations and references section types
@@ -267,3 +272,45 @@ def get_section(
             child.body,
             section_type,
         )
+
+
+def _extract_heading_from_node(node) -> str:
+    """Extract heading text from a section node.
+
+    Args:
+        node: BeautifulSoup node element
+
+    Returns:
+        Extracted heading text or empty string
+    """
+    if node is None:
+        return ""
+
+    # Check if node itself is a header
+    if hasattr(node, "name") and node.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        text = node.get_text(strip=True)
+        if text:
+            return text
+
+    # Look for any header tags within the node (h1-h6)
+    for tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        header = node.find(tag)
+        if header:
+            text = header.get_text(strip=True)
+            if text:
+                return text
+
+    # Look for elements with 'title' in the class name
+    if hasattr(node, "find"):
+        title_elem = node.find(
+            class_=lambda x: x
+            and any(
+                "title" in cls.lower() for cls in (x if isinstance(x, list) else [x])
+            )
+        )
+        if title_elem:
+            text = title_elem.get_text(strip=True)
+            if text:
+                return text
+
+    return ""
