@@ -30,6 +30,8 @@ def process_file(
     """
     main_text: dict[str, Any] = {}
     tables_dict: dict[str, Any] = {}
+    fileTypeX = check_file_type(file_path)
+    print(f"File type is: {fileTypeX}")
     match check_file_type(file_path):
         case FileType.HTML:
             print("Sent yet again for processing...")
@@ -42,6 +44,7 @@ def process_file(
             return Autocorpus(file_path, main_text, dict(), dict())
         case FileType.PDF:
             try:
+                logger.info("entered pdf extraction mode")
                 from .pdf import extract_pdf_content
 
                 text, tables = extract_pdf_content(file_path)
@@ -51,6 +54,7 @@ def process_file(
 
                 if tables:
                     tables_dict = tables.to_dict()
+                    logger.info(f"{tables_dict}")
 
                 return Autocorpus(file_path, main_text, dict(), tables_dict)
 

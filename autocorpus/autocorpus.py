@@ -7,6 +7,7 @@ from typing import Any
 
 from autocorpus.ac_bioc.json import BioCJSONEncoder
 
+from . import logger
 from .ac_bioc import BioCJSON, BioCXML
 from .ac_bioc.collection import BioCCollection
 from .bioc_formatter import get_formatted_bioc_collection
@@ -47,12 +48,14 @@ class Autocorpus:
         Returns:
             main text as BioC JSON
         """
-        return json.dumps(
-            get_formatted_bioc_collection(self.main_text, self.file_path),
+        logger.info("returning bioc format from pdf")
+        col = get_formatted_bioc_collection(self.main_text, self.file_path).to_json(
             cls=BioCJSONEncoder,
             indent=2,
             ensure_ascii=False,
         )
+        logger.info(f"collection:{col}")
+        return col
 
     def main_text_to_bioc_xml(self) -> str:
         """Get the currently loaded main text as BioC XML.
@@ -67,6 +70,7 @@ class Autocorpus:
                 ensure_ascii=False,
             )
         )
+
         return BioCXML.dumps(collection)
 
     def tables_to_bioc_json(self, indent: int = 2) -> str:

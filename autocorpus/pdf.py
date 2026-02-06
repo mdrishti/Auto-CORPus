@@ -61,10 +61,13 @@ def extract_pdf_content(
     text, _, _ = text_from_rendered(rendered)
     # separate text and tables
     text, tables = _extract_table_from_pdf_text(text)
+
     # format data for BioC
     bioc_text = BioCTextConverter.build_bioc(text, str(file_path), "pdf")
     bioc_tables = BioCTableConverter.build_bioc(tables, str(file_path))
-
+    # logger.info(f"table:{bioc_tables}")
+    logger.info(f"text:{bioc_text}")
+    logger.info("exiting pdf extraction")
     return bioc_text, bioc_tables
 
 
@@ -80,15 +83,21 @@ def _split_text_and_tables(text: str) -> tuple[list[str], list[list[str]]]:
         if "|" in line:
             inside_table = True
             table_lines.append(line)
+            # logger.info(f"table_lines appended")
         elif inside_table:
             inside_table = False
             tables.append(table_lines)
             main_text_lines.append(line)
             table_lines = []
+            logger.info("table reached!!!!")
             continue
         else:
             main_text_lines.append(line)
-
+    # After the loop
+    if inside_table and table_lines:
+        tables.append(table_lines)
+        logger.info("table reached!!!!")
+    # logger.info(f"table_lines:{table_lines}")
     return main_text_lines, tables
 
 
@@ -128,5 +137,6 @@ def _extract_table_from_pdf_text(text: str) -> tuple[str, list[DataFrame]]:
     """Extracts tables from PDF text and returns the remaining text and parsed tables."""
     main_text_lines, raw_tables = _split_text_and_tables(text)
     tables_output = _parse_tables(raw_tables)
+    # logger.info(f"raw tables:{tables_output}")
     text_output = "\n\n".join(main_text_lines)
     return text_output, tables_output

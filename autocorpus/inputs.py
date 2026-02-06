@@ -22,6 +22,12 @@ def get_file_type(file_path: Path) -> str:
         if file_path.name.startswith("table_"):
             return "linked_tables"
         return "main_text"
+    if file_path.suffix == ".pdf":
+        return "main_text"
+    if file_path.suffix == ".xls":
+        return "linked_tables"
+    if file_path.suffix == ".xlsx":
+        return "main_text"
 
     logger.warning(
         f"unable to identify file type for {file_path}, file will not be processed"

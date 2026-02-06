@@ -20,13 +20,14 @@ def get_formatted_bioc_collection(
     Returns:
         BioC collection
     """
+    print(f"main_text: {main_text}")
     bioc_collection = BioCCollection(
         date=datetime.today().strftime("%Y%m%d"),
         documents=[get_formatted_bioc_document(main_text, file_path)],
         source="Auto-CORPus (full-text)",
         key="autocorpus_fulltext.key",
     )
-    # print(f"main_text: {main_text}")
+
     return bioc_collection
 
 
@@ -44,6 +45,7 @@ def get_formatted_bioc_document(
         BioC document complete populated with passages.
     """
     # build document passages
+    print(f"main_text: {main_text}")
     seen_headings = []
     passages = [BioCPassage().from_title(main_text["title"], 0)]
     offset = 0  # offset for passage start position
