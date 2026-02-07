@@ -29,26 +29,32 @@ def run_autocorpus(config, structure, key, output_format):
 
     # Only write main_text files if there's actual main text content
     if structure[key]["main_text"] and ac.main_text:
-        if output_format.lower() == "json":
+        try:
+            if output_format.lower() == "json":
+                with open(
+                    out_dir / f"{Path(key).name}_bioc.json",
+                    "w",
+                    encoding="utf-8",
+                ) as outfp:
+                    outfp.write(ac.main_text_to_bioc_json())
+            else:
+                with open(
+                    out_dir / f"{Path(key).name}_bioc.xml",
+                    "w",
+                    encoding="utf-8",
+                ) as outfp:
+                    outfp.write(ac.main_text_to_bioc_xml())
             with open(
-                out_dir / f"{Path(key).name}_bioc.json",
+                out_dir / f"{Path(key).name}_abbreviations.json",
                 "w",
                 encoding="utf-8",
             ) as outfp:
-                outfp.write(ac.main_text_to_bioc_json())
-        else:
-            with open(
-                out_dir / f"{Path(key).name}_bioc.xml",
-                "w",
-                encoding="utf-8",
-            ) as outfp:
-                outfp.write(ac.main_text_to_bioc_xml())
-        with open(
-            out_dir / f"{Path(key).name}_abbreviations.json",
-            "w",
-            encoding="utf-8",
-        ) as outfp:
-            outfp.write(ac.abbreviations_to_bioc_json())
+                outfp.write(ac.abbreviations_to_bioc_json())
+        except Exception as e:
+            logger.warning(
+                f"Failed to convert main_text to BioC format for {key}: {e}. "
+                "Skipping main_text output, but will still process tables if available."
+            )
 
         ## TODO: Uncomment when SI conversion is supported
         # out_filename = str(file_path).replace(".pdf", ".pdf_bioc.json")
