@@ -25,8 +25,10 @@ def run_autocorpus(config, structure, key, output_format):
     logger.info("Sent for processing...")
 
     out_dir = Path(structure[key]["out_dir"])
-    if structure[key]["main_text"]:
-        key = key.replace("\\", "/")
+    key = key.replace("\\", "/")
+
+    # Only write main_text files if there's actual main text content
+    if structure[key]["main_text"] and ac.main_text:
         if output_format.lower() == "json":
             with open(
                 out_dir / f"{Path(key).name}_bioc.json",
