@@ -25,7 +25,7 @@ def get_file_type(file_path: Path) -> str:
     if file_path.suffix == ".pdf":
         return "main_text"
     if file_path.suffix == ".xls":
-        return "linked_tables"
+        return "main_text"
     if file_path.suffix == ".xlsx":
         return "main_text"
 

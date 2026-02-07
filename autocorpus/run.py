@@ -21,6 +21,7 @@ def run_autocorpus(config, structure, key, output_format):
         file_path=Path(structure[key]["main_text"]),
         linked_tables=sorted(Path(lt) for lt in structure[key]["linked_tables"]),
     )
+    logger.info(f"ac:{ac}")
     logger.info("Sent for processing...")
 
     out_dir = Path(structure[key]["out_dir"])

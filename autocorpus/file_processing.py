@@ -90,6 +90,7 @@ def process_file(
 
             if tbls:
                 tables_dict = tbls.to_dict()
+                # logger.info(f"table excel dict:{tables_dict}")
 
             return Autocorpus(file_path, dict(), dict(), tables_dict)
 

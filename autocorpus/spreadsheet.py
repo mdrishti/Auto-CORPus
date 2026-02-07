@@ -62,5 +62,6 @@ def extract_spreadsheet_content(filename: Path) -> BioCTableCollection | None:
 
     if tables:
         tables_bioc = BioCTableConverter.build_bioc(tables, str(filename))
+        # logger.info(f"table excel:{tables_bioc}")
 
     return tables_bioc
