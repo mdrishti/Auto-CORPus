@@ -49,12 +49,13 @@ class Autocorpus:
             main text as BioC JSON
         """
         logger.info("returning bioc format from pdf/xls/text")
-        col = get_formatted_bioc_collection(self.main_text, self.file_path).to_json(
+        col = json.dumps(
+            get_formatted_bioc_collection(self.main_text, self.file_path),
             cls=BioCJSONEncoder,
             indent=2,
             ensure_ascii=False,
         )
-        logger.info(f"collection:{col}")
+
         return col
 
     def main_text_to_bioc_xml(self) -> str:

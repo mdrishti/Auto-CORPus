@@ -21,7 +21,7 @@ def run_autocorpus(config, structure, key, output_format):
         file_path=Path(structure[key]["main_text"]),
         linked_tables=sorted(Path(lt) for lt in structure[key]["linked_tables"]),
     )
-    logger.info(f"ac:{ac}")
+    # logger.info(f"ac:{ac}")
     logger.info("Sent for processing...")
 
     out_dir = Path(structure[key]["out_dir"])
@@ -31,6 +31,7 @@ def run_autocorpus(config, structure, key, output_format):
     if structure[key]["main_text"] and ac.main_text:
         try:
             if output_format.lower() == "json":
+                logger.info("ac:main_text_to_bioc")
                 with open(
                     out_dir / f"{Path(key).name}_bioc.json",
                     "w",
